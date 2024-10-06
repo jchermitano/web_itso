@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Research Center</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Style for the back button */
+        .back-button {
+            padding: 10px 15px;
+            background-color: #a7a3a3; /* Bootstrap primary color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none; /* Remove underline for links */
+        }
+
+        /* Align the button and heading */
+        .header-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px; /* Space between header and table */
+        }
+
+        .header-container h1 {
+            margin-left: 20px; /* Space between button and heading */
+        }
+    </style>
+</head>
+<body>
+    <div class="header-container">
+        <a href="index.html" class="back-button">Back</a> <!-- Back button -->
+        <h1>Logs</h1>
+    </div>
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Student Number</th>
+                <th>Login</th>
+                <th>Logout</th>
+                <th>Remaining Time</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            <!-- Data will be inserted here by JavaScript -->
+        </tbody>
+    </table>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io(); // Connect to the WebSocket server
+
+        // Function to update the table with student data
+        function updateTable(students) {
+            const tableBody = document.getElementById('table-body');
+            tableBody.innerHTML = ''; // Clear existing rows
+
+            students.forEach(student => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${student.email}</td>
+                    <td>${student.student_number}</td>
+                    <td>${student.timestamp}</td>
+                    <td>${student.logout_time}</td>
+                    <td>${student.remaining_time}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Listen for 'updateData' event from the server
+        socket.on('updateData', (students) => {
+            updateTable(students);
+        });
+
+    </script>
+</body>
+</html>
