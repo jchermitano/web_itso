@@ -10,7 +10,7 @@ const io = socketIo(server);
 const port = 3000;
 
 // MongoDB connection setup
-const url = "mongodb+srv://qjchermitano:7h3tL4m8qSzjU3w@itso.u2hsn.mongodb.net/"; // Replace with your MongoDB connection string
+const url = "mongodb+srv://johnnyhermitano02:o3awZpQZJ5D7YMCr@itso.zngrn.mongodb.net/"; // Replace with your MongoDB connection string
 const databaseName = 'itsodb';
 
 app.use(express.static('public')); // Serve static files from 'public' directory
@@ -24,7 +24,7 @@ io.on('connection', (socket) => {
         try {
             const client = await MongoClient.connect(url);
             const db = client.db(databaseName);
-            const students = await db.collection('itso').find({}).toArray();
+            const students = await db.collection('logs').find({}).toArray();
             socket.emit('updateData', students); // Send the data to the client
         } catch (error) {
             console.error(error);
